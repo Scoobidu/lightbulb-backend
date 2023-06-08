@@ -13,21 +13,38 @@ async function saveIdea(req, res) {
     });
 
     const s3 = new AWS.S3();
-    const { data } = req.files;
+    const { data } = req.files || {};
 
-    const uploadPromises = data.map((file) => {
+    let locations;
+
+    if (Array.isArray(data) && data.length) {
+      const uploadPromises = data.map((file) => {
+        const params = {
+          Bucket: "lightbulb-assets",
+          Key: file.name,
+          Body: file.data,
+          ContentType: file.mimetype,
+          ACL: "public-read",
+        };
+        return s3.upload(params).promise();
+      });
+
+      const results = await Promise.all(uploadPromises);
+      locations = results.map((r) => r.Location);
+    } else if (data) {
       const params = {
         Bucket: "lightbulb-assets",
-        Key: file.name,
-        Body: file.data,
-        ContentType: file.mimetype,
+        Key: data.name,
+        Body: data.data,
+        ContentType: data.mimetype,
         ACL: "public-read",
       };
-      return s3.upload(params).promise();
-    });
-
-    const results = await Promise.all(uploadPromises);
-    const locations = results.map((r) => r.Location);
+      const result = await s3.upload(params).promise();
+      locations = [result.Location];
+    } else {
+      // Handle the case when there is no data
+      locations = []; // Set locations to an empty array or handle it as needed
+    }
 
     const idea = new ideasModel({
       userID: req.body.userID,
@@ -37,7 +54,7 @@ async function saveIdea(req, res) {
       description: req.body.description,
       category: req.body.category,
     });
-    idea.save();
+    await idea.save();
 
     return res.status(200).send({
       response_code: 200,
