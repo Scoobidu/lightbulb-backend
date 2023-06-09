@@ -1,23 +1,22 @@
 const userModel = require("../model");
-const mongoose = require('mongoose');
-
+const mongoose = require("mongoose");
 
 async function updateBio(req, res) {
-    const userId =req.query.userId
-    const updatedBio = req.body.bio
+  const userId = req.query.userId;
+  const updatedBio = req.body.bio;
   try {
-    const user =  await userModel.findOne({userId: userId });
+    const user = await userModel.findOne({ userId: userId });
 
     if (!user) {
-        return res.status(404).json({ message: 'user not found' });
-      }
+      return res.status(404).json({ message: "user not found" });
+    }
 
-    user.bio = updatedBio
+    user.bio = updatedBio;
     await user.save();
 
     return res
       .status(200)
-      .send({ code: 200, message: "updated Bio" ,data:user.bio});
+      .send({ code: 200, message: "updated Bio", data: user.bio });
   } catch (error) {
     console.log(error);
     return res

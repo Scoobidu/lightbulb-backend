@@ -2,9 +2,9 @@ const userModel = require("../model");
 
 async function getById(req, res) {
   try {
-    console.log(req.query.userId)
+    // console.log(req.query.userId)
     const user = await userModel.find({ userId: req.query.userId });
-    
+
     return res
       .status(200)
       .send({ code: 200, message: "user find", data: user });
