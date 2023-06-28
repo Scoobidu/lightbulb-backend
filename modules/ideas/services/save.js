@@ -47,7 +47,7 @@ async function saveIdea(req, res) {
     }
 
     const idea = new ideasModel({
-      UserPhotoUrl: req.body.UserPhotoUrl,
+      userPhotoUrl: req.body.userPhotoUrl,
       userID: req.body.userID,
       ideaID: uuidv4(),
       images: locations,
