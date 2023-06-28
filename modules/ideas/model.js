@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const ideasModel = new Schema(
   {
+    UserPhotoUrl: { type: String, required: false },
     userID: { type: String, required: true, unique: false },
     ideaID: { type: String, unique: true, required: true },
     images: { type: Array, required: false },
