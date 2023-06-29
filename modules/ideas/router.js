@@ -3,10 +3,16 @@ const router = express.Router();
 
 const saveIdea = require("./services/save");
 const getAllIdeas = require("./services/getAll");
-const getByID = require('./services/getById')
-const getByUserID = require('./services/getByUserId')
-const removeIdea = require('./services/remove')
-const ideaVouches = require('./services/vouched')
+const getByID = require("./services/getById");
+const getByUserID = require("./services/getByUserId");
+const vouchersList = require("./services/VouchersList");
+const removeIdea = require("./services/remove");
+const ideaVouches = require("./services/vouched");
+
+// get vouchers
+router.get("/vouchersList", async (req, res) => {
+  await vouchersList(req, res);
+});
 
 // save ideas
 router.post("/save", async (req, res) => {
@@ -30,9 +36,8 @@ router.delete("/remove", async (req, res) => {
   await removeIdea(req, res);
 });
 
-router.put('/vouch',async (req,res)=>{
-  await ideaVouches(req,res)
-})
-
+router.put("/vouch", async (req, res) => {
+  await ideaVouches(req, res);
+});
 
 module.exports = router;
