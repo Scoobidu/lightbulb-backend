@@ -1,24 +1,21 @@
 const discussionsModel = require("../model");
 
 async function saveReply(req, res) {
+  const comId = req.query.comId;
   try {
-    const newReply = await discussionsModel.findOneAndUpdate(
-      {
-        comId: req.body.comId,
-        userID: req.body.userID,
-        ideaID: req.body.ideaID,
-      },
-      req.body
-    );
-    console.log(newReply);
+    console.log("as");
+    const newReply = await discussionsModel.findOne({ comId: comId });
+    if (newReply) {
+      console.log(newReply.replies);
+      newReply.replies.push(req.body);
+      await newReply.save();
+    }
 
-    return res
-      .status(200)
-      .send({
-        code: 200,
-        message: "replied to the discussion",
-        data: newReply,
-      });
+    return res.status(200).send({
+      code: 200,
+      message: "replied to the discussion",
+      data: newReply,
+    });
   } catch (error) {
     console.log(error);
     return res
