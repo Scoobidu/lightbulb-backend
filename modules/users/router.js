@@ -12,7 +12,7 @@ router.post("/register", async (req, res) => {
   await saveUser(req, res);
 });
 
-router.get("/getUserById", async (req, res) => {
+router.get("/", async (req, res) => {
   await getUserById(req, res);
 });
 
