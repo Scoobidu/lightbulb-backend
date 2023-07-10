@@ -1,12 +1,12 @@
 const ideasModel = require("../model");
 
-async function getAllIdeas(req, res) {
+async function getByTags(req, res) {
+  console.log(req.query.tag);
   try {
-    const allIdeas = await ideasModel.find();
-
+    const idea = await ideasModel.find({ category: req.query.tag });
     return res
       .status(200)
-      .send({ code: 200, message: "all idea", data: allIdeas });
+      .send({ code: 200, message: "fetched by tag", data: idea });
   } catch (error) {
     console.log(error);
     return res
@@ -15,4 +15,4 @@ async function getAllIdeas(req, res) {
   }
 }
 
-module.exports = getAllIdeas;
+module.exports = getByTags;

@@ -4,6 +4,7 @@ const router = express.Router();
 const saveIdea = require("./services/save");
 const getAllIdeas = require("./services/getAll");
 const getByID = require("./services/getById");
+const getByTags = require("./services/getByTags");
 const getByUserID = require("./services/getByUserId");
 const vouchersList = require("./services/VouchersList");
 const removeIdea = require("./services/remove");
@@ -17,6 +18,10 @@ router.get("/vouchersList", async (req, res) => {
 // save ideas
 router.post("/save", async (req, res) => {
   await saveIdea(req, res);
+});
+
+router.get("/getByTags", async (req, res) => {
+  await getByTags(req, res);
 });
 
 // get all ideas
